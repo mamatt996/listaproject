@@ -1,35 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Recipe } from './recipe.model';
+import { RecipesService } from "./../../recipes.service";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Recipe } from "./recipe.model";
 
 @Component({
-  selector: 'app-recipe-list',
-  templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.scss']
+  selector: "app-recipe-list",
+  templateUrl: "./recipe-list.component.html",
+  styleUrls: ["./recipe-list.component.scss"]
 })
 export class RecipeListComponent implements OnInit {
+  @Output() selectedRecipe = new EventEmitter<Recipe>();
 
-  recipes: Recipe[] = [
-    new Recipe(
-      "Rigatoni all'amatriciana",
-      "Lorem ipsum dsa dsa",
-      "https://cdn.cook.stbm.it/thumbnails/ricette/142/142656/hd750x421.jpg"
-    ),
-    new Recipe(
-      "Rigatoni alla carbonara",
-      "Lorem ipsum dsa dsa",
-      "http://www.lazanzararoma.com/wp-content/uploads/2015/01/ricetta-della-carbonara-zanzara-prati.jpg"
-    ),
-    new Recipe(
-      "Spacghetti cacio e pepe",
-      "Lorem ipsum dsa dsa",
-      "https://ips.plug.it/cips/buonissimo.org/cms/2012/04/spaghetti-cacio-e-pepe.jpg"
-    )
-  ];
+  recipes: Recipe[] = [];
 
-  constructor() { }
-
-
-  ngOnInit() {
+  onSelectedList(recipe) {
+    console.log("Elemento lista selezionato", recipe);
+    this.selectedRecipe.emit(recipe);
   }
 
+  constructor(public recipesService: RecipesService) {
+    this.recipes = recipesService.recipes;
+  }
+
+  ngOnInit() {}
 }
