@@ -14,6 +14,8 @@ import { LikeComponent } from "./like/like.component";
 import { DetailsComponent } from "./recipes/details/details.component";
 import { HttpClientModule } from "@angular/common/http";
 import { AbstractPipe } from './abstract.pipe';
+import { RecipesComponent } from './recipes/recipes.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { AbstractPipe } from './abstract.pipe';
     RecipeItemComponent,
     LikeComponent,
     DetailsComponent,
-    AbstractPipe
+    AbstractPipe,
+    RecipesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
