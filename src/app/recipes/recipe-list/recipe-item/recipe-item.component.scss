@@ -1,0 +1,11 @@
+.item-recipe {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: darkgray;
+    border-radius: 12px;
+    border: 1px solid darksalmon;
+    cursor: pointer;
+    &:hover {
+        background-color: #ccaa55;
+    }
+}
