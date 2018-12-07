@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { Recipe } from "./recipes/recipe-list/recipe.model";
 import { HttpClient } from "@angular/common/http";
 
@@ -6,26 +6,11 @@ import { HttpClient } from "@angular/common/http";
   providedIn: "root"
 })
 export class RecipesService {
-  URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=cake";
+  URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 
-  public recipes: Recipe[] = [
-    new Recipe(
-      "Rigatoni all'amatriciana",
-      "Lorem ipsum dsa dsa",
-      "https://cdn.cook.stbm.it/thumbnails/ricette/142/142656/hd750x421.jpg"
-    ),
-    new Recipe(
-      "Rigatoni alla carbonara",
-      "Lorem ipsum dsa dsa",
-      "http://www.lazanzararoma.com/wp-content/uploads/2015/01/ricetta-della-carbonara-zanzara-prati.jpg"
-    ),
-    new Recipe(
-      "Spacghetti cacio e pepe",
-      "Lorem ipsum dsa dsa",
-      "https://ips.plug.it/cips/buonissimo.org/cms/2012/04/spaghetti-cacio-e-pepe.jpg"
-    )
-  ];
+  recipes: Recipe[] = [];
 
+  newRecipes = new EventEmitter<Recipe[]>();
   selectedRecipe: Recipe = null;
 
   changeSelectedRecipe(ricetta: Recipe) {
@@ -35,12 +20,24 @@ export class RecipesService {
 
   constructor(private http: HttpClient) {}
 
-  searchRecipes() {
-    const responde = this.http
-      .get(this.URL)
+  searchRecipes(searchTerm: string = "cake") {
+    const url_composta = this.URL + searchTerm;
+    const response = this.http
+      .get(url_composta)
       .toPromise()
-      .then(recipes => {
-        console.log("Ricette ricevute", recipes);
+      .then((resp: { meals: [] }) => {
+        console.log("Ricette ricevute", resp);
+        this.recipes = resp.meals.map(function(meal: any) {
+          console.log(meal);
+          const myRecipe = new Recipe(
+            meal.strMeal,
+            meal.strInstructions,
+            meal.strMealThumb
+          );
+          return myRecipe;
+        });
+        console.log("this.recipes.ripulite", this.recipes);
+        this.newRecipes.emit(this.recipes);
       })
       .catch(err => {
         console.error("ERRORE!!!", err);
