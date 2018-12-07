@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Recipe } from "./recipes/recipe-list/recipe.model";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root"
 })
 export class RecipesService {
-  URL = "http://www.recipepuppy.com/api/?q=cake";
+  URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=cake";
 
   public recipes: Recipe[] = [
     new Recipe(
@@ -32,5 +33,17 @@ export class RecipesService {
     this.selectedRecipe = ricetta;
   }
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
+  searchRecipes() {
+    const responde = this.http
+      .get(this.URL)
+      .toPromise()
+      .then(recipes => {
+        console.log("Ricette ricevute", recipes);
+      })
+      .catch(err => {
+        console.error("ERRORE!!!", err);
+      });
+  }
 }
