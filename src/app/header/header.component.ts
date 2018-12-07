@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { RecipesService } from "../recipes.service";
+import { FormControl } from "@angular/forms";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent implements OnInit {
+  searchTerm = new FormControl("");
 
-  constructor() { }
+  constructor(private service: RecipesService) {}
 
-  ngOnInit() {
+  submitSearch() {
+    this.service.searchRecipes(this.searchTerm.value);
   }
 
+  ngOnInit() {}
 }
